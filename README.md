@@ -1,32 +1,58 @@
-# React + TypeScript + Vite
+# MAX / WhatsApp Web — Клиент GREEN-API
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Клиентский веб-интерфейс мессенджера в стилистике **web.max.ru** / **WhatsApp Web** для отправки и получения текстовых сообщений через сервис **GREEN-API** с использованием методов HTTP API (`SendMessage`, `ReceiveNotification`, `DeleteNotification`).
 
-Currently, two official plugins are available:
+## Стек технологий
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 18** + **TypeScript** + **Vite**
+- **TanStack React Query v5** (управление серверным состоянием, мутациями и кешированием)
+- **Lucide React** (иконки)
+- **Vanilla CSS** (дизайн-токены, светлая и тёмная темы, адаптивная верстка)
+- **Web Audio API** (звуковые уведомления без внешних файлов)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Запуск проекта
 
-## Expanding the Oxlint configuration
+1. **Установка зависимостей:**
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+2. **Запуск в режиме разработки:**
+   ```bash
+   npm run dev
+   ```
+   Приложение будет доступно по адресу `http://localhost:5173`.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+3. **Сборка продакшн-бандла:**
+   ```bash
+   npm run build
+   ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## Руководство пользователя
+
+### 1. Подключение собственного инстанса GREEN-API
+
+1. На стартовом экране укажите ваши `idInstance` и `apiTokenInstance` из личного кабинета [console.green-api.com](https://console.green-api.com).
+2. При необходимости (например, для выделенных инстансов) откройте настройку **API Host** и укажите ваш адрес (по умолчанию: `https://api.green-api.com`).
+3. Нажмите **«Войти в мессенджер»**. Приложение проверит доступность инстанса и откроет список диалогов.
+4. Нажмите **«+»** в боковой панели, введите номер телефона получателя в международном формате (например, `79991234567` или `+7 (999) 123-45-67`).
+5. Напишите текстовое сообщение и нажмите `Enter`. Сообщение будет отправлено через метод `SendMessage`.
+6. Ответные сообщения поступают автоматически через фоновый цикл `ReceiveNotification` и сразу подтверждаются через `DeleteNotification`.
+
+---
+
+### 2. Демонстрационный режим (быстрый осмотр)
+
+Демонстрационный режим позволяет протестировать все возможности UI/UX без наличия активного инстанса GREEN-API и второго телефонного номера:
+
+1. **Вход в демо-режим:** На стартовом экране нажмите кнопку **«Запустить в демонстрационном режиме»**. Приложение откроет мессенджер с предзаполненными параметрами и тестовым диалогом.
+2. **Отправка сообщений:** Выберите диалог, наберите текст в нижнем поле ввода и отправьте его клавишей `Enter` или кнопкой со стрелкой. Сообщение отобразится в правой части с отметкой времени и статусом отправки.
+3. **Симуляция входящих сообщений:** 
+   - Нажмите на кнопку с иконкой искорок (**`✨`**) в шапке открытого чата или в верхней панели сайдбара.
+   - Собеседник мгновенно пришлет ответное текстовое сообщение, прозвучит звуковой сигнал Web Audio API, а в списке чатов обновится превью последнего сообщения.
+4. **Создание нового чата:** Нажмите кнопку **`+`** в левой колонке, введите любой телефонный номер и имя контакта — будет создан новый чат с валидацией и предварительным просмотром формата `WhatsApp ID (@c.us)`.
+5. **Управление опросом:** Кнопка **Play / Pause** в шапке сайдбара позволяет временно приостанавливать и возобновлять фоновый опрос очереди уведомлений.

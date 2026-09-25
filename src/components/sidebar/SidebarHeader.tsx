@@ -1,5 +1,6 @@
 import { MessageSquarePlus, LogOut, Play, Pause, Sparkles } from 'lucide-react';
 import { useChat } from '../../context/ChatContext';
+import { ThemeToggle } from '../common/ThemeToggle';
 
 interface SidebarHeaderProps {
   onOpenNewChat: () => void;
@@ -62,6 +63,8 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ onOpenNewChat }) =
         >
           {isPolling ? <Pause size={18} /> : <Play size={18} />}
         </button>
+
+        <ThemeToggle />
 
         <button
           type="button"

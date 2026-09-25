@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { GreenApiClient } from '../api/client';
+import { useDeleteNotificationMutation, useSendMessageMutation } from '../api/hooks';
 import type { Chat, ConnectionStatus, GreenApiCredentials, Message } from '../types/chat';
 import { formatDisplayPhone, getAvatarColor, toChatId } from '../utils/phone';
 import { sound } from '../utils/sound';
@@ -68,6 +69,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('disconnected');
   const [isPolling, setIsPolling] = useState<boolean>(true);
   const [toasts, setToasts] = useState<ToastInfo[]>([]);
+
+  const client = useMemo(() => {
+    return credentials ? new GreenApiClient(credentials) : null;
+  }, [credentials]);
+
+  const sendMessageMutation = useSendMessageMutation(client);
+  const deleteNotificationMutation = useDeleteNotificationMutation(client);
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const pollingActiveRef = useRef<boolean>(false);
@@ -236,8 +244,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       sound.playSent();
 
       try {
-        const client = new GreenApiClient(credentials);
-        const res = await client.sendMessage(activeChatId, trimmed);
+        const res = await sendMessageMutation.mutateAsync({
+          chatId: activeChatId,
+          message: trimmed,
+        });
 
         setMessagesMap((prev) => {
           const list = prev[activeChatId] || [];
@@ -407,7 +417,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             try {
-              await client.deleteNotification(receiptId);
+              await deleteNotificationMutation.mutateAsync(receiptId);
             } catch {
               // Failed to delete notification, will retry next cycle
             }

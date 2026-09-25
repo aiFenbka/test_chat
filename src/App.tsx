@@ -1,9 +1,12 @@
 import React from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './api/queryClient';
 import { AuthScreen } from './components/auth/AuthScreen';
 import { ChatArea } from './components/chat/ChatArea';
 import { ToastContainer } from './components/common/Toast';
 import { Sidebar } from './components/sidebar/Sidebar';
 import { ChatProvider, useChat } from './context/ChatContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 const MainLayout: React.FC = () => {
   const { credentials } = useChat();
@@ -30,9 +33,13 @@ const MainLayout: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <ChatProvider>
-      <MainLayout />
-    </ChatProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <ChatProvider>
+          <MainLayout />
+        </ChatProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 

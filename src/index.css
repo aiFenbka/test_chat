@@ -1,4 +1,10 @@
 :root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
   --bg-app: #0c1317;
   --bg-window: #111b21;
   --bg-sidebar: #111b21;
@@ -31,15 +37,85 @@
   --danger-color: #ea4335;
   --danger-hover: #d93025;
 
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-full: 9999px;
+[data-theme="light"] {
+  --bg-app: #d1d7db;
+  --bg-window: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-header: #f0f2f5;
+  --bg-input: #f0f2f5;
+  --bg-hover: #f5f6f6;
+  --bg-active: #ebebeb;
+  --bg-chat: #efeae2;
+
+  --bubble-out: #d9fdd3;
+  --bubble-out-text: #111b21;
+  --bubble-in: #ffffff;
+  --bubble-in-text: #111b21;
+
+  --primary-accent: #00a884;
+  --primary-accent-hover: #02906f;
+  --primary-accent-active: #007a60;
+
+  --text-primary: #111b21;
+  --text-secondary: #667781;
+  --text-muted: #8696a0;
+  --text-link: #027eb5;
+
+  --border-light: rgba(11, 20, 26, 0.08);
+  --border-dark: #e9edef;
+
+  --tick-delivered: #53bdeb;
+  --tick-sent: #8696a0;
+
+  --danger-color: #ea4335;
+  --danger-hover: #d93025;
+
+  --shadow-sm: 0 1px 2px rgba(11, 20, 26, 0.06);
+  --shadow-md: 0 4px 12px rgba(11, 20, 26, 0.1);
+  --shadow-lg: 0 12px 28px rgba(11, 20, 26, 0.16);
+}
+
+[data-theme="dark"] {
+  --bg-app: #0c1317;
+  --bg-window: #111b21;
+  --bg-sidebar: #111b21;
+  --bg-header: #202c33;
+  --bg-input: #2a3942;
+  --bg-hover: #202c33;
+  --bg-active: #2a3942;
+  --bg-chat: #0b141a;
+
+  --bubble-out: #005c4b;
+  --bubble-out-text: #e9edef;
+  --bubble-in: #202c33;
+  --bubble-in-text: #e9edef;
+
+  --primary-accent: #00a884;
+  --primary-accent-hover: #02906f;
+  --primary-accent-active: #007a60;
+
+  --text-primary: #e9edef;
+  --text-secondary: #8696a0;
+  --text-muted: #667781;
+  --text-link: #53bdeb;
+
+  --border-light: rgba(134, 150, 160, 0.15);
+  --border-dark: #222d34;
+
+  --tick-delivered: #53bdeb;
+  --tick-sent: #8696a0;
+
+  --danger-color: #ea4335;
+  --danger-hover: #d93025;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
 }
 
 * {
@@ -1287,3 +1363,82 @@ input, textarea {
   from { transform: translateX(20px); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+
+.auth-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -6px;
+}
+
+.theme-toggle-btn {
+  color: var(--text-secondary);
+}
+
+.theme-toggle-btn:hover {
+  color: var(--primary-accent);
+}
+
+/* Light Theme Layout Tweaks */
+[data-theme="light"] .app-shell {
+  background: linear-gradient(180deg, #00a884 0%, #00a884 127px, #d1d7db 127px, #d1d7db 100%);
+}
+
+[data-theme="light"] .auth-container {
+  background: linear-gradient(180deg, #00a884 0%, #00a884 222px, #d1d7db 222px, #d1d7db 100%);
+}
+
+[data-theme="light"] .message-list-container {
+  background-color: var(--bg-chat);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+
+[data-theme="light"] .date-separator-pill {
+  background-color: #ffffff;
+  color: #54656f;
+  box-shadow: 0 1px 2px rgba(11, 20, 26, 0.12);
+}
+
+[data-theme="light"] .empty-dialog-badge {
+  background-color: #ffffff;
+  color: #54656f;
+  box-shadow: 0 1px 2px rgba(11, 20, 26, 0.12);
+}
+
+[data-theme="light"] .message-timestamp {
+  color: rgba(17, 27, 33, 0.55);
+}
+
+[data-theme="light"] .auth-card,
+[data-theme="light"] .modal-card,
+[data-theme="light"] .toast-item {
+  background-color: #ffffff;
+  border-color: rgba(11, 20, 26, 0.12);
+}
+
+[data-theme="light"] .emoji-quick-bar {
+  background-color: #ffffff;
+  border-color: rgba(11, 20, 26, 0.12);
+}
+
+[data-theme="light"] .search-input-container {
+  background-color: #f0f2f5;
+}
+
+[data-theme="light"] .input-field-wrapper {
+  background-color: #ffffff;
+}
+
+[data-theme="light"] .phone-preview-badge {
+  background-color: rgba(0, 168, 132, 0.08);
+  border-color: rgba(0, 168, 132, 0.3);
+}
+
+[data-theme="light"] .demo-btn {
+  border-color: rgba(11, 20, 26, 0.18);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .demo-btn:hover {
+  background-color: rgba(11, 20, 26, 0.04);
+}
+

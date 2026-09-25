@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { KeyRound, Server, ShieldCheck, Sparkles, MessageSquare, ArrowRight, Loader2 } from 'lucide-react';
-import { GreenApiClient } from '../../api/client';
+import { useCheckInstanceStateMutation } from '../../api/hooks';
 import { useChat } from '../../context/ChatContext';
+import { ThemeToggle } from '../common/ThemeToggle';
 
 export const AuthScreen: React.FC = () => {
   const { setCredentials, showToast, createChat } = useChat();
+  const checkStateMutation = useCheckInstanceStateMutation();
 
   const [idInstance, setIdInstance] = useState('');
   const [apiTokenInstance, setApiTokenInstance] = useState('');
   const [host, setHost] = useState('https://api.green-api.com');
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,16 +30,13 @@ export const AuthScreen: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
-
     try {
-      const client = new GreenApiClient({
+      const state = await checkStateMutation.mutateAsync({
         idInstance: cleanId,
         apiTokenInstance: cleanToken,
         host: cleanHost,
       });
 
-      const state = await client.getStateInstance();
       setCredentials({
         idInstance: cleanId,
         apiTokenInstance: cleanToken,
@@ -49,7 +47,6 @@ export const AuthScreen: React.FC = () => {
       const msg = err instanceof Error ? err.message : 'Ошибка подключения к GREEN-API';
       showToast(msg, 'error');
 
-      // Still allow entering if user insists or instance status check differs
       const proceedAnyway = window.confirm(
         `${msg}\n\nЖелаете войти с указанными учетными данными без предварительной проверки статуса?`
       );
@@ -60,8 +57,6 @@ export const AuthScreen: React.FC = () => {
           host: cleanHost,
         });
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -79,6 +74,9 @@ export const AuthScreen: React.FC = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <div className="auth-top-bar">
+          <ThemeToggle />
+        </div>
         <div className="auth-header">
           <div className="auth-logo-badge">
             <MessageSquare size={32} />
@@ -153,8 +151,8 @@ export const AuthScreen: React.FC = () => {
             </div>
           )}
 
-          <button type="submit" className="submit-btn" disabled={isLoading}>
-            {isLoading ? (
+          <button type="submit" className="submit-btn" disabled={checkStateMutation.isPending}>
+            {checkStateMutation.isPending ? (
               <>
                 <Loader2 size={18} className="spinner-icon" />
                 <span>Проверка подключения...</span>

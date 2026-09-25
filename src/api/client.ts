@@ -17,6 +17,10 @@ export class GreenApiClient {
     };
   }
 
+  get idInstance(): string {
+    return this.credentials.idInstance;
+  }
+
   private buildUrl(method: string, extraPath = ''): string {
     const cleanHost = this.credentials.host.replace(/\/+$/, '');
     const cleanId = this.credentials.idInstance.trim();
